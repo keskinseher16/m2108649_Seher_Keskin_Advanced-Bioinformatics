@@ -1,0 +1,134 @@
+---
+title: "Advanced Bioinformatics 2022 Assessment"
+author: "m2108649"
+date: '2022-04-01'
+output: html_document
+---
+
+# Task 3.1.
+```{r}
+## sum ( ) function in R is used to calculate the addition of the values presented within the bracket which can be numeric or vectors. 
+
+## Colon operator(:) prints a list of elements starting with the element before the colon to the element after it in other words we add a range.
+
+sum(5:55) # with the sum function we are telling it to add the numbers between the specified range starting from 5 till 55.
+
+```
+or 
+
+```{r}
+##Alternatively, sum() function can also be used with vector. We can create a vector and call it x and then pass it into sum() function as parameters.
+
+x <- c(5:55); # Creating a vector
+sum(x)   # Performing the sum() function for the given vector
+```
+
+
+
+# Task 3.2.
+```{r}
+## We can write our own function in order to make repetitive operations using single command. We are defining our function by writing sumfun and the input parameter called 'n' which will be used to feed to the function.
+
+## Afterwards, we define the operation that we want to program to run in the body of the function which is calculating the sum of integers between 5 and n with n being any number, within curly braces ({}). Then the function can be used to do the calculation for n=10, n=20, n=100 in a single command.
+
+sumfun <- function(n) {sum(5:n)}
+sumfun(10)
+sumfun(20)
+sumfun(100)
+```
+
+
+
+# Task 3.3.
+```{r}
+## Fibonacci series is a combination of numbers.
+
+## A loop is a way to repeat a sequence of instructions under given commands which will allow us to print part of the code in repetition.The for loop for this example explains that 'for each element that is in the sequence' 
+
+Fibonacci <- function(n) # Defining the function by writing Fibonacci and the input parameter is called n which will be the number of term desired.
+  Fibonacci <- numeric(n) # Defining that the function has numerical value and specifying the number of entries to be printed by n
+  Fibonacci <- numeric(12) # Specifying that 12 numbers of the Fibonacci series desired
+  Fibonacci[1] <- 1 #Specifying the 1st element of the Fibonacci series is 1
+  Fibonacci[2] <- 1 #Specifying the 2nd element of the Fibonacci series is 1
+  for(element in 3:12) Fibonacci[element] <- Fibonacci[element-2] + Fibonacci[element-1] #In mathematical terms, the sequence of Fn of Fibonacci numbers is defined by the recurrence relation of Fn-1 + Fn-2. So it will print the Fibonacci numbers starting the loop from the 3rd to ending at 12th.
+  print("First 12 Fibonacci numbers:") # To give a heading for the series
+  print(Fibonacci) # To print the Fibonacci sequence results
+```
+
+
+
+# Task 3.4.
+```{r}
+library(ggplot2) # Load the ggplot2 package
+
+## To plot graph, ggplot() function is used. First argument of ggplot() is the dataset(mtcars) to use in the graph.
+## aes to indicate the x and y variables used in the graph where x is as.factor(gear) and for y is mpg. The function geom_boxplot is used to create a box plot. ggtitle is used to give a tittle for the graph. Labs is used to change the legend title.
+
+ggplot(data = mtcars, aes(x= as.factor(gear), y= mpg)) + geom_boxplot(aes(fill= as.factor(gear))) + ggtitle("Box plot of Miles per gallon(mpg) vs Number of gears") + labs(fill='Number of gears')
+```
+
+
+ 
+# Task 3.5.
+```{r}
+## To see the details of the cars data
+cars
+
+## y variable represents distance in feet.
+## x variable represents speed in milesperhour.
+## z variable represents lm function to fit linear regression models where it includes a formula (y ~ x) and a data to be used.
+
+y <- cars$dist  
+x <- cars$speed;
+z <- lm(formula = "y ~ x",data = cars)
+summary(z)
+```
+#What are the fitted slope and intercept of the line?
+ The Fitted slope is 3.9324
+ The Intercept is -17.5791
+#What are their standard errors?
+Standard errors are (6.7584,0.4155)
+#What are the units used for the variables in the dataset? 
+The variables used in the dataset are speed and breaking distance.
+Units of speed = miles per hour(mph)
+Units of breaking distance = miles(mi)
+
+
+
+# Task 3.6.
+```{r}
+##  c variable was created and given to the first line command to plot the graph, ggplot() function is used. First argument of ggplot() is the dataset(cars) to use in the graph.aes to indicate the x and y variables used in the graph where x is speed and for y is distance. The function geom_point is used to create a scatter plot.geom_smooth is used to add another layer onto the plot. 
+
+## b variable represents the previous c variable, ggtitle and axis tittles.
+
+library(ggplot2) # Load the ggplot2 package
+c<- ggplot(data = cars, aes(x= speed, y=dist)) +geom_point() + geom_smooth(method ="lm",formula = "y ~ x")
+b <- c +ggtitle("Linear fit of the relationship between breaking distance(dist) and speed")+ xlab("speed(milesperhour-mph)")+ ylab("dist(feet-ft)")
+b
+```
+
+
+
+# Task 3.7.
+```{r}
+## Allocate the variable dist_m to breaking distance. Convert distance(ft) to miles by multiplying it by 0.00018939. (1foot is 0.00018939miles)
+## Speed_m_h variable represents square root of speed as indicated in the question.
+## lm function is used to fit linear regression to estimate the average reaction time for driver to start breaking.
+
+## The reaction time is calculated by multiplying by 3600 (1hour is 3600seconds)
+## Load the ggplot2 package
+## ggplot() function was used to plot the graph where data is cars, x-axis is speed_m_h, y-axis is dist_m. geom_point() is used to plot a scatter graph. geom_smooth is used to add the fitted line onto the graph to show the relationship.
+
+dist_m <- cars$dist* 0.00018939
+speed_m_h <- cars $speed^2
+lm(formula = dist_m ~ speed_m_h)
+
+reaction_time <- 2.443e-05*3600
+reaction_time
+
+library(ggplot2)
+plot <- ggplot(data = cars, aes(speed_m_h, dist_m)) + geom_point() + geom_smooth(method = "lm", formula = y ~ x) + ggtitle("Regression model between breaking distance and speed")
+plot
+```
+
+
